@@ -75,7 +75,7 @@ const addRoute = (resource) => {
 let arguement = arguements(process.argv.slice(2));
 
 if (arguement.hasOwnProperty('resource')) {
-    addRoute(resource)
+    addRoute(arguement.resource)
 }
 else {
     let folderName = arguement._[0];
