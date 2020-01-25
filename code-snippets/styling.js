@@ -21,7 +21,7 @@ module.exports.addStylingToProject = (styleName, directory) => {
                 let packageFile = `${directory}/app.js`
                 if (fs.existsSync(packageFile)) {
                     fs.readFile(packageFile, 'utf8', (err, oldContent) => {
-                        let newContent = oldContent.replace(/(.*)express\(\)/g, `const app = express();\nimport scssMiddleware from 'node-sass-middleware';\n\napp.use(scssMiddleware({\n    src: __dirname + '/views/sass',\n    dest: __dirname + '/views/css',\n    debug: true,\n    outputStyle: 'compressed',\n    prefix: '/css'}));`);
+                        let newContent = oldContent.replace(/(.*)express\(\)/g, `const app = express();\nimport sassMiddleware from 'node-sass-middleware';\n\napp.use(sassMiddleware({\n    src: __dirname + '/views/sass',\n    dest: __dirname + '/views/css',\n    debug: true,\n    indentedSyntax: true,\n    //outputStyle: 'compressed',\n    prefix: '/css'}));`);
                         fs.writeFile(packageFile, newContent, (err) => {
                             if (err) throw err;
                         })
@@ -36,7 +36,7 @@ module.exports.addStylingToProject = (styleName, directory) => {
                 let packageFile = `${directory}/app.js`
                 if (fs.existsSync(packageFile)) {
                     fs.readFile(packageFile, 'utf8', (err, oldContent) => {
-                        let newContent = oldContent.replace(/(.*)express\(\)/g, `const app = express();\nimport scssMiddleware from 'node-sass-middleware';\n\napp.use(scssMiddleware({\n    src: __dirname + '/views/scss',\n    dest: __dirname + '/views/css',\n    debug: true,\n    outputStyle: 'compressed',\n    prefix: '/css'}));`);
+                        let newContent = oldContent.replace(/(.*)express\(\)/g, `const app = express();\nimport scssMiddleware from 'node-sass-middleware';\n\napp.use(scssMiddleware({\n    src: __dirname + '/views/scss',\n    dest: __dirname + '/views/css',\n    debug: true,\n    //outputStyle: 'compressed',\n    prefix: '/css'}));`);
                         fs.writeFile(packageFile, newContent, (err) => {
                             if (err) throw err;
                         })
