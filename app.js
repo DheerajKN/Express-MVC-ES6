@@ -11,6 +11,8 @@ const getFileAndUpdateContent = require('./helperFunctions/getFileAndUpdateConte
 const createControllerAndService = require('./helperFunctions/createControllerAndService');
 const styling = require('./code-snippets/styling')
 const viewComponent = require('./code-snippets/view')
+const authComponent = require('./code-snippets/authComponent.js')
+const dbComponent = require('./code-snippets/dbComponent.js')
 
 const cdIntoApp = () => {
     return new Promise(resolve => {
@@ -90,5 +92,11 @@ else {
     }
     if (arguement.hasOwnProperty('view')) {
         viewComponent.addViewToProject(arguement.view, appDirectory)
+    }
+    if (arguement.hasOwnProperty('db')) {
+        dbComponent.addDBComponent(appDirectory, folderName)
+        if (arguement.hasOwnProperty('auth')) {
+            authComponent.addAuthComponent(appDirectory)
+        }
     }
 }

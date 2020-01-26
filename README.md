@@ -17,7 +17,10 @@ Simple Express Boiler Plate creator with mvc and es7 syntax
 
 > [inside-folder-where-boilerplate-is-created] \$ node express-es7-generator/app.js --resource=phone
 
-## Things in development
+- --db: This would download mongoose and create initial setup files for connection with database along with sample user table with validation fields
 
-- Using --view=[react|vue]
-- --db for mongo db configuration code that has basic schema generation, setup code etc.
+> [directory-where-you-want-create-boilerplate] \$ node express-es7-generator/app.js <project-name> --db
+
+- --auth: This would automatically create config files for authentication using JWT and uses created User table fields
+
+> [directory-where-you-want-create-boilerplate] \$ node express-es7-generator/app.js <project-name> --db --auth

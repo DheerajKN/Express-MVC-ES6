@@ -2,15 +2,11 @@
   "name": "express-es6-generator",
   "version": "1.0.0",
   "description": "A Simple Express ES7 Code Generator that provides quick route, controller and service creation",
-  "further-enhancements": [
-    "JWT Config and subsequent middleware",
-    "EJS and HBS Integeration",
-    "SCSS SASS css Integeration"
-  ],
+  "further-enhancements": "",
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/DheerajKN/express-es6-generator"
+    "url": "https://github.com/DheerajKN/Express-MVC-ES7"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,8 +15,10 @@
   "author": "K. N. Dheeraj",
   "license": "ISC",
   "dependencies": {
+    "express-validator": "^6.3.1",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
+    "mongoose": "^5.8.9",
     "pluralize": "^8.0.0",
     "shelljs": "^0.8.3"
   },
