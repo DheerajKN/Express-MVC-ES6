@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const mkdirp = require('mkdirp');
 const shell = require('shelljs');
 const fs = require('fs');
