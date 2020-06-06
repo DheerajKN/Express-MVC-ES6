@@ -12,5 +12,5 @@ routes.use('/users', users);
 import addresses from '../controller/addressController';
 routes.use('/addresses', addresses);
 
-module.exports = routes;
+export default routes;
 `

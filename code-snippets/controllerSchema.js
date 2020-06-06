@@ -6,4 +6,4 @@ const ${pluralResource} = Router();
 ${pluralResource}.get('/', ${resource}Service.all);
 ${pluralResource}.get('/:${resource}Id', ${resource}Service.single);
 
-module.exports = ${pluralResource};`
+export default ${pluralResource};`

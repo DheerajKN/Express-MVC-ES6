@@ -9,10 +9,10 @@ module.exports.updateRouteText = (filePath, resource) => {
         try {
             if (fs.existsSync(filePath)) {
                 fs.readFile(filePath, 'utf8', (err, oldContent) => {
-                    let newContent = oldContent.replace(/module.exports(.*)/g, `import ${pluralizedResource} from '../controller/${resource}Controller';
+                    let newContent = oldContent.replace(/export default(.*)/g, `import ${pluralizedResource} from '../controller/${resource}Controller';
 routes.use('/${pluralizedResource}', ${pluralizedResource});
 
-module.exports = routes;`);
+export default routes;`);
 
                     createFileWithContent.createFileWithContent(filePath, newContent, err => {
                         if (err) { console.log('Error in adding data to routes file') }

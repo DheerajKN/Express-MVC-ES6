@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("User", UserSchema);`
+export default mongoose.model("User", UserSchema);`
 
       createFileWithContent.createFileWithContent(folderDirectory + '/src/models/User.js', userSchema)
 
