@@ -13,9 +13,9 @@ module.exports.addViewToProject = (view, directory) => {
 
     switch (view) {
         case 'ejs':
-            fetchFile.fetchContent('/template/view.ejs').then((data) =>
+            fetchFile.fetchContent('/template/view/view.ejs').then((data) =>
                 createFileAndAddContent.createFileWithContent(`${directory}/views/view.ejs`, data))
-            fetchFile.fetchContent('/template/layout.ejs').then((data) =>
+            fetchFile.fetchContent('/template/view/layout.ejs').then((data) =>
                 createFileAndAddContent.createFileWithContent(`${directory}/views/layout.ejs`, data))
             shell.exec('npm i ejs express-partials', () => {
                 try {
@@ -34,9 +34,9 @@ module.exports.addViewToProject = (view, directory) => {
             })
             break;
         case 'hbs':
-            fetchFile.fetchContent('/template/layout.hbs').then((data) =>
+            fetchFile.fetchContent('/template/view/layout.hbs').then((data) =>
                 createFileAndAddContent.createFileWithContent(`${directory}/views/main.hbs`, data))
-            fetchFile.fetchContent('/template/view.hbs').then((data) =>
+            fetchFile.fetchContent('/template/view/view.hbs').then((data) =>
                 createFileAndAddContent.createFileWithContent(`${directory}/views/view.hbs`, data))
             shell.exec('npm i express-handlebars', () => {
                 try {

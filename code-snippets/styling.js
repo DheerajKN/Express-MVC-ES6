@@ -15,7 +15,7 @@ module.exports.addStylingToProject = (styleName, directory) => {
     mkdirp(directory + '/views/css');
     switch (styleName) {
         case 'sass':
-            fetchFile.fetchContent('/template/style.sass').then((data) =>
+            fetchFile.fetchContent('/template/style/style.sass').then((data) =>
                 createFileAndAddContent.createFileWithContent(`${directory}/views/sass/style.sass`, data))
             shell.exec('npm i node-sass-middleware', () => {
                 let packageFile = `${directory}/app.js`
@@ -30,7 +30,7 @@ module.exports.addStylingToProject = (styleName, directory) => {
             })
             break;
         case 'scss':
-            fetchFile.fetchContent('/template/style.scss').then((data) =>
+            fetchFile.fetchContent('/template/style/style.scss').then((data) =>
                 createFileAndAddContent.createFileWithContent(`${directory}/views/scss/style.scss`, data))
             shell.exec('npm i node-sass-middleware', () => {
                 let packageFile = `${directory}/app.js`
@@ -45,7 +45,7 @@ module.exports.addStylingToProject = (styleName, directory) => {
             })
             break;
         case 'less':
-            fetchFile.fetchContent('/template/style.less').then((data) =>
+            fetchFile.fetchContent('/template/style/style.less').then((data) =>
                 createFileAndAddContent.createFileWithContent(`${directory}/views/less/style.less`, data))
             shell.exec('npm i less-middleware', () => {
                 let packageFile = `${directory}/app.js`
@@ -60,7 +60,7 @@ module.exports.addStylingToProject = (styleName, directory) => {
             })
             break;
         default:
-            fetchFile.fetchContent('/template/style.css').then((data) =>
+            fetchFile.fetchContent('/template/style/style.css').then((data) =>
                 createFileAndAddContent.createFileWithContent(`${directory}/views/css/style.css`, data))
             break;
     }
