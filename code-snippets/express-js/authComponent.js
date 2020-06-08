@@ -1,6 +1,6 @@
 const createFileWithContent = require('../../helperFunctions/createFileAndAddContent')
 const shell = require('shelljs')
-const getFileAndUpdateContent = require('./getFileAndUpdateContent')
+const getFileAndUpdateContent = require('./resourceFlag/getFileAndUpdateContent')
 
 module.exports.addAuthComponent = folderDirectory => {
     shell.exec('npm i jsonwebtoken bcryptjs', () => {
@@ -53,11 +53,23 @@ exports.verifyToken = (req, res, next) => {
         const authFileContent = `import bcrypt from 'bcryptjs';
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
+import {check, validationResult} from "express-validator";
+
 import { authenticate, verifyToken } from '../auth.js';
 import User from '../models/User';
 
 const authProvider = Router();
-authProvider.post('/register', async (req, res) => {
+authProvider.post('/register', [
+        check("email", "Please include a valid email").isEmail(),
+        check("password").exists().withMessage("Password should not be empty")
+        .isLength({min:8}).withMessage("Password must have min. of 8 characters")
+        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/).withMessage("Password must be atleast one upper case, one number and special number")
+    ], async (req, res) => {
+
+    const errors = validationResult(req)
+    if(!errors.isEmpty()){
+        res.status(400).json({errors: errors.array()})
+    }
     const { email, password } = req.body;
 
     const userExists = await User.findOne({ email });

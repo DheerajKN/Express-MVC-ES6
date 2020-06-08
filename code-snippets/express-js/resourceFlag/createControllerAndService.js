@@ -1,6 +1,6 @@
 const pluralize = require('pluralize')
 
-const createFileWithContent = require('../../helperFunctions/createFileAndAddContent');
+const createFileWithContent = require('../../../helperFunctions/createFileAndAddContent');
 
 module.exports.createControllerAndService = (fileDirectory, resource) => {
     createFileWithContent.createFileWithContent(`${fileDirectory}/controller/${resource}Controller.js`, 

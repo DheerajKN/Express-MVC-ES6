@@ -15,10 +15,8 @@
   "author": "K. N. Dheeraj",
   "license": "ISC",
   "dependencies": {
-    "express-validator": "^6.3.1",
     "minimist": "^1.2.3",
     "mkdirp": "^0.5.1",
-    "mongoose": "^5.8.9",
     "pluralize": "^8.0.0",
     "shelljs": "^0.8.3"
   },
