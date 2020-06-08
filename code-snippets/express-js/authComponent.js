@@ -1,5 +1,6 @@
 const createFileWithContent = require('../../helperFunctions/createFileAndAddContent')
 const shell = require('shelljs')
+const {appendFileSync} = require('fs');
 const getFileAndUpdateContent = require('./resourceFlag/getFileAndUpdateContent')
 
 module.exports.addAuthComponent = folderDirectory => {
@@ -79,7 +80,7 @@ authProvider.post('/register', [
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(password, salt, async (err, hash) => {
                 try {
-                    const token = jwt.sign({ email, password }, 'abcdef', {
+                    const token = jwt.sign({ email, password }, process.env.JWT_PVTKEY, {
                         expiresIn: '15m'
                     });
 
@@ -107,7 +108,7 @@ authProvider.post('/', async (req, res) => {
         const user = await authenticate(email, password);
 
         // Create JWT
-        const token = jwt.sign({ user }, 'abcdef', {
+        const token = jwt.sign({ user }, process.env.JWT_PVTKEY, {
             expiresIn: '15m'
         });
 
@@ -121,7 +122,7 @@ authProvider.post('/', async (req, res) => {
 });
 
 authProvider.get('/meDetailed', verifyToken, (req, res) => {
-    jwt.verify(req.headers.authorization, 'abcdef', (err, { user }) => {
+    jwt.verify(req.headers.authorization, process.env.JWT_PVTKEY, (err, { user }) => {
         if (err) {
             res.sendStatus(403);
         } else {
@@ -138,5 +139,7 @@ module.exports = authProvider;
         getFileAndUpdateContent.updateRouteText(`${folderDirectory}/src/routes/index.js`, 'auth')
             .then(() => createFileWithContent.createFileWithContent(`${folderDirectory}/src/controller/authController.js`, authFileContent))
             .catch((err) => console.log(err));
+        
+        appendFileSync(folderDirectory + '/.env', `\nJWT_PVTKEY=abcdef`);
     });
 }
