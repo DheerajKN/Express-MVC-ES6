@@ -3,7 +3,7 @@ const fs = require('fs');
 const createFileAndAddContent = require('../helperFunctions/createFileAndAddContent')
 const fetchFile = require('../helperFunctions/fetchContent')
 
-module.exports.addViewToProject = (view, directory) => {
+module.exports.addViewToProject = (view, directory, fileType) => {
     const supportedViews = ['ejs', 'hbs'];
 
     if (!supportedViews.includes(view)) {

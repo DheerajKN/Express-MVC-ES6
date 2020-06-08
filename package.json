@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A Simple Express ES7 Code Generator that provides quick route, controller and service creation",
   "further-enhancements": "",
-  "main": "app.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/DheerajKN/Express-MVC-ES7"
@@ -23,6 +23,6 @@
     "shelljs": "^0.8.3"
   },
   "bin": {
-    "express-es7-generator": "app.js"
+    "express-es6-generator": "index.js"
   }
 }

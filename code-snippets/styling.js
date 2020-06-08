@@ -4,7 +4,7 @@ const mkdirp = require('mkdirp')
 const createFileAndAddContent = require('../helperFunctions/createFileAndAddContent')
 const fetchFile = require('../helperFunctions/fetchContent')
 
-module.exports.addStylingToProject = (styleName, directory) => {
+module.exports.addStylingToProject = (styleName, directory, fileType) => {
     const supportedStyles = ['css', 'sass', 'scss', 'less'];
 
     if (!supportedStyles.includes(styleName)) {
@@ -18,7 +18,7 @@ module.exports.addStylingToProject = (styleName, directory) => {
             fetchFile.fetchContent('/template/style/style.sass').then((data) =>
                 createFileAndAddContent.createFileWithContent(`${directory}/views/sass/style.sass`, data))
             shell.exec('npm i node-sass-middleware', () => {
-                let packageFile = `${directory}/app.js`
+                let packageFile = `${directory}/app.${fileType}`
                 if (fs.existsSync(packageFile)) {
                     fs.readFile(packageFile, 'utf8', (err, oldContent) => {
                         let newContent = oldContent.replace(/(.*)express\(\)/g, `const app = express();\nimport sassMiddleware from 'node-sass-middleware';\n\napp.use(sassMiddleware({\n    src: __dirname + '/views/sass',\n    dest: __dirname + '/views/css',\n    debug: true,\n    indentedSyntax: true,\n    //outputStyle: 'compressed',\n    prefix: '/css'}));`);
@@ -33,7 +33,7 @@ module.exports.addStylingToProject = (styleName, directory) => {
             fetchFile.fetchContent('/template/style/style.scss').then((data) =>
                 createFileAndAddContent.createFileWithContent(`${directory}/views/scss/style.scss`, data))
             shell.exec('npm i node-sass-middleware', () => {
-                let packageFile = `${directory}/app.js`
+                let packageFile = `${directory}/app.${fileType}`
                 if (fs.existsSync(packageFile)) {
                     fs.readFile(packageFile, 'utf8', (err, oldContent) => {
                         let newContent = oldContent.replace(/(.*)express\(\)/g, `const app = express();\nimport scssMiddleware from 'node-sass-middleware';\n\napp.use(scssMiddleware({\n    src: __dirname + '/views/scss',\n    dest: __dirname + '/views/css',\n    debug: true,\n    //outputStyle: 'compressed',\n    prefix: '/css'}));`);
@@ -48,7 +48,7 @@ module.exports.addStylingToProject = (styleName, directory) => {
             fetchFile.fetchContent('/template/style/style.less').then((data) =>
                 createFileAndAddContent.createFileWithContent(`${directory}/views/less/style.less`, data))
             shell.exec('npm i less-middleware', () => {
-                let packageFile = `${directory}/app.js`
+                let packageFile = `${directory}/app.${fileType}`
                 if (fs.existsSync(packageFile)) {
                     fs.readFile(packageFile, 'utf8', (err, oldContent) => {
                         let newContent = oldContent.replace(/(.*)express\(\)/g, `const app = express();\nimport lessMiddleware from 'less-middleware';\n\napp.use(lessMiddleware('/less', {\n  dest: 'css',\n  debug: true,\n  pathRoot: path.join(__dirname, 'views')}))`);
