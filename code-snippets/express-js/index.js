@@ -4,7 +4,7 @@ const {existsSync, writeFile, readFile} = require('fs');
 
 module.exports.initialJSSetup = (folderDirectory, folderName) => {
   //Install Dependencies
-  exec(`npm install express express-validator && npm install -D nodemon @babel/core @babel/cli @babel/preset-env @babel/node && npm i`, () => {
+  exec(`npm install express express-validator dotenv && npm install -D nodemon @babel/core @babel/cli @babel/preset-env @babel/node && npm i`, () => {
     this.attachJSStartScript(folderDirectory)
     console.log("\nFinished installing packages\n")
     console.log(`cd into ${folderName} and use futher commands like 
@@ -15,7 +15,7 @@ module.exports.initialJSSetup = (folderDirectory, folderName) => {
   cp('-R', join(__dirname, 'src'), folderDirectory)
   
   const initialDirectory = join(folderDirectory, 'src');
-  const finalSet = ['app.js'].map(file => join(initialDirectory, file))
+  const finalSet = ['app.js', '.env'].map(file => join(initialDirectory, file))
   mv(finalSet, join(folderDirectory))
 }
 module.exports.attachJSStartScript = (folderDirectory) => {
