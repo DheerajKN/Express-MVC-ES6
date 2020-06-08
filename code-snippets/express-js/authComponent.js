@@ -1,6 +1,6 @@
-const createFileWithContent = require('../helperFunctions/createFileAndAddContent')
+const createFileWithContent = require('../../helperFunctions/createFileAndAddContent')
 const shell = require('shelljs')
-const getFileAndUpdateContent = require('../helperFunctions/getFileAndUpdateContent')
+const getFileAndUpdateContent = require('./getFileAndUpdateContent')
 
 module.exports.addAuthComponent = folderDirectory => {
     shell.exec('npm i jsonwebtoken bcryptjs', () => {

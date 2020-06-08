@@ -1,4 +1,4 @@
-const createFileWithContent = require('../helperFunctions/createFileAndAddContent')
+const createFileWithContent = require('../../helperFunctions/createFileAndAddContent');
 const shell = require('shelljs')
 const fs = require('fs');
 

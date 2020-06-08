@@ -1,7 +1,7 @@
 const fs = require('fs');
 const pluralize = require('pluralize')
 
-const createFileWithContent = require('./createFileAndAddContent');
+const createFileWithContent = require('../../helperFunctions/createFileAndAddContent');
 
 module.exports.updateRouteText = (filePath, resource) => {
     return new Promise((resolve, reject) => {
