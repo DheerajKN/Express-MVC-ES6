@@ -14,6 +14,7 @@ Simple Express Boiler Plate creator with mvc and es6 syntax
 
 - Style [Supported]: SCSS, LESS, CSS, SASS
 - View [Supported]: EJS, HBS
+- Database [Supported]: mongo [Default], postgres, mysql
 
 ## Other Functionality
 
@@ -24,6 +25,11 @@ Simple Express Boiler Plate creator with mvc and es6 syntax
 - --db: This would download mongoose and create initial setup files for connection with database along with sample user table with validation fields
 
 > [inside-folder-where-boilerplate-is-created] \$ express-es6-generator <project-name> --db
+
+    ## Arguements to db flag
+    - You can also pass which db you want to generate using keys=postgres,mysql, but the default if no value is passed mongo is used.
+    express-es6-generator <project-name> --db=<postgres|mongo|mysql>
+
 
 - --auth: This would automatically create config files for authentication using JWT and uses created User table fields
 

@@ -11,9 +11,9 @@ module.exports.JSFlagScript = (arguement, appDirectory) => {
       .then(() => createControllerAndService.createControllerAndService(`${appDirectory}/src`, arguement.resource))
       .catch((err) => console.log(err));
   } else if (arguement.hasOwnProperty('db')) {
-      dbComponent.addDBComponent(appDirectory, process.cwd().split(sep).pop())
+      dbComponent.addDBComponent(arguement, appDirectory, process.cwd().split(sep).pop())
     if (arguement.hasOwnProperty('auth')) {
-      authComponent.addAuthComponent(appDirectory)
+      authComponent.addAuthComponent(arguement, appDirectory)
     }
   }
 }

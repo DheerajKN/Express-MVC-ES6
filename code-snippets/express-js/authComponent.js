@@ -3,7 +3,7 @@ const shell = require('shelljs')
 const {appendFileSync} = require('fs');
 const getFileAndUpdateContent = require('./resourceFlag/getFileAndUpdateContent')
 
-module.exports.addAuthComponent = folderDirectory => {
+module.exports.addAuthComponent = (arguement, folderDirectory) => {
     shell.exec('npm i jsonwebtoken bcryptjs', () => {
 
         const fileContent = `import bcrypt from 'bcryptjs'
@@ -13,7 +13,7 @@ exports.authenticate = (email, password) => {
     return new Promise(async (resolve, reject) => {
     try {
         //Match Password
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ ${/^(mongo|true)$/.test(arguement.db) ? 'email' : 'where: { email }'} });
         bcrypt.compare(password, user.password, (err, isMatch) => {
             if (err) throw err;
             if (isMatch) {
@@ -45,7 +45,7 @@ exports.verifyToken = (req, res, next) => {
     next();
     } else {
     // Forbidden
-    res.sendStatus(403);
+    return res.sendStatus(403);
     }
 }`
 
@@ -64,18 +64,18 @@ authProvider.post('/register', [
         check("email", "Please include a valid email").isEmail(),
         check("password").exists().withMessage("Password should not be empty")
         .isLength({min:8}).withMessage("Password must have min. of 8 characters")
-        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/).withMessage("Password must be atleast one upper case, one number and special number")
+        .matches(/^(?=.*[\\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\\w!@#$%^&*]{8,}$/).withMessage("Password must be atleast one upper case, one number and special character")
     ], async (req, res) => {
 
     const errors = validationResult(req)
     if(!errors.isEmpty()){
-        res.status(400).json({errors: errors.array()})
+        return res.status(400).json({errors: errors.array()})
     }
     const { email, password } = req.body;
 
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ ${/^(mongo|true)$/.test(arguement.db) ? 'email' : 'where: { email }'} });
     if (userExists) {
-        res.sendStatus(403)
+        return res.sendStatus(403)
     } else {
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(password, salt, async (err, hash) => {
@@ -89,10 +89,10 @@ authProvider.post('/register', [
 
                     const { iat, exp } = jwt.decode(token);
                     // Respond with token
-                    res.status(201).json({ iat, exp, token });
+                    return res.status(201).json({ iat, exp, token });
                 } catch (err) {
                     console.log(err)
-                    res.sendStatus(403)
+                    return res.sendStatus(403)
                 }
             });
         });
@@ -114,19 +114,19 @@ authProvider.post('/', async (req, res) => {
 
         const { iat, exp } = jwt.decode(token);
         // Respond with token
-        res.send({ iat, exp, token });
+        return res.send({ iat, exp, token });
 
     } catch (err) {
-        res.sendStatus(403);
+        return res.sendStatus(403);
     }
 });
 
 authProvider.get('/meDetailed', verifyToken, (req, res) => {
-    jwt.verify(req.headers.authorization, process.env.JWT_PVTKEY, (err, { user }) => {
+    jwt.verify(req.token, process.env.JWT_PVTKEY, (err, { user }) => {
         if (err) {
-            res.sendStatus(403);
+            return res.sendStatus(403);
         } else {
-            res.json({
+            return res.sendStatus(200).json({
                 user
             });
         }
