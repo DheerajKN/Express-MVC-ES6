@@ -1,7 +1,7 @@
 const fs = require('fs');
 const pluralize = require('pluralize')
 
-const createFileWithContent = require('../../../helperFunctions/createFileAndAddContent');
+const {createFileWithContent} = require('../../../helperFunctions/createFileAndAddContent');
 
 module.exports.updateRouteText = (filePath, resource) => {
     return new Promise((resolve, reject) => {
@@ -14,7 +14,7 @@ routes.use('/${pluralizedResource}', ${pluralizedResource});
 
 export default routes;`);
 
-                    createFileWithContent.createFileWithContent(filePath, newContent, err => {
+                    createFileWithContent(filePath, newContent, err => {
                         if (err) { console.log('Error in adding data to routes file') }
                     })
                 })

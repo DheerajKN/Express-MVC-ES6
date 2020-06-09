@@ -1,8 +1,8 @@
 const shell = require('shelljs')
 const fs = require('fs')
 const mkdirp = require('mkdirp')
-const createFileAndAddContent = require('../helperFunctions/createFileAndAddContent')
-const fetchFile = require('../helperFunctions/fetchContent')
+const {createFileWithContent} = require('../helperFunctions/createFileAndAddContent')
+const {fetchContent} = require('../helperFunctions/fetchContent')
 
 module.exports.addStylingToProject = (styleName, directory, fileType) => {
     const supportedStyles = ['css', 'sass', 'scss', 'less'];
@@ -15,8 +15,8 @@ module.exports.addStylingToProject = (styleName, directory, fileType) => {
     mkdirp(directory + '/views/css');
     switch (styleName) {
         case 'sass':
-            fetchFile.fetchContent('/template/style/style.sass').then((data) =>
-                createFileAndAddContent.createFileWithContent(`${directory}/views/sass/style.sass`, data))
+            fetchContent('/template/style/style.sass').then((data) =>
+                createFileWithContent(`${directory}/views/sass/style.sass`, data))
             shell.exec('npm i node-sass-middleware', () => {
                 let packageFile = `${directory}/app.${fileType}`
                 if (fs.existsSync(packageFile)) {
@@ -30,8 +30,8 @@ module.exports.addStylingToProject = (styleName, directory, fileType) => {
             })
             break;
         case 'scss':
-            fetchFile.fetchContent('/template/style/style.scss').then((data) =>
-                createFileAndAddContent.createFileWithContent(`${directory}/views/scss/style.scss`, data))
+            fetchContent('/template/style/style.scss').then((data) =>
+                createFileWithContent(`${directory}/views/scss/style.scss`, data))
             shell.exec('npm i node-sass-middleware', () => {
                 let packageFile = `${directory}/app.${fileType}`
                 if (fs.existsSync(packageFile)) {
@@ -45,8 +45,8 @@ module.exports.addStylingToProject = (styleName, directory, fileType) => {
             })
             break;
         case 'less':
-            fetchFile.fetchContent('/template/style/style.less').then((data) =>
-                createFileAndAddContent.createFileWithContent(`${directory}/views/less/style.less`, data))
+            fetchContent('/template/style/style.less').then((data) =>
+                createFileWithContent(`${directory}/views/less/style.less`, data))
             shell.exec('npm i less-middleware', () => {
                 let packageFile = `${directory}/app.${fileType}`
                 if (fs.existsSync(packageFile)) {
@@ -60,8 +60,8 @@ module.exports.addStylingToProject = (styleName, directory, fileType) => {
             })
             break;
         default:
-            fetchFile.fetchContent('/template/style/style.css').then((data) =>
-                createFileAndAddContent.createFileWithContent(`${directory}/views/css/style.css`, data))
+            fetchContent('/template/style/style.css').then((data) =>
+                createFileWithContent(`${directory}/views/css/style.css`, data))
             break;
     }
 }

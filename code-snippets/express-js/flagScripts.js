@@ -3,7 +3,7 @@ const {sep} = require('path');
 const getFileAndUpdateContent = require('./resourceFlag/getFileAndUpdateContent');
 const createControllerAndService = require('./resourceFlag/createControllerAndService');
 const authComponent = require('./authComponent.js')
-const dbComponent = require('./dbComponent.js')
+const dbComponent = require('./dbFlag/dbComponent.js')
 
 module.exports.JSFlagScript = (arguement, appDirectory) => {
   if (arguement.hasOwnProperty('resource')) {
@@ -13,7 +13,7 @@ module.exports.JSFlagScript = (arguement, appDirectory) => {
   } else if (arguement.hasOwnProperty('db')) {
       dbComponent.addDBComponent(arguement, appDirectory, process.cwd().split(sep).pop())
     if (arguement.hasOwnProperty('auth')) {
-      authComponent.addAuthComponent(arguement, appDirectory)
+      authComponent.addAuthComponent(/^(mongo|true)$/.test(arguement.db) ? 'email' : 'where: { email }', appDirectory)
     }
   }
 }

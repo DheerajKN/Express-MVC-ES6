@@ -1,7 +1,7 @@
 const shell = require('shelljs')
 const fs = require('fs');
-const createFileAndAddContent = require('../helperFunctions/createFileAndAddContent')
-const fetchFile = require('../helperFunctions/fetchContent')
+const {createFileWithContent} = require('../helperFunctions/createFileAndAddContent')
+const {fetchContent} = require('../helperFunctions/fetchContent')
 
 module.exports.addViewToProject = (view, directory, fileType) => {
     const supportedViews = ['ejs', 'hbs'];
@@ -13,10 +13,10 @@ module.exports.addViewToProject = (view, directory, fileType) => {
 
     switch (view) {
         case 'ejs':
-            fetchFile.fetchContent('/template/view/view.ejs').then((data) =>
-                createFileAndAddContent.createFileWithContent(`${directory}/views/view.ejs`, data))
-            fetchFile.fetchContent('/template/view/layout.ejs').then((data) =>
-                createFileAndAddContent.createFileWithContent(`${directory}/views/layout.ejs`, data))
+            fetchContent('/template/view/view.ejs').then((data) =>
+                createFileWithContent(`${directory}/views/view.ejs`, data))
+            fetchContent('/template/view/layout.ejs').then((data) =>
+                createFileWithContent(`${directory}/views/layout.ejs`, data))
             shell.exec('npm i ejs express-partials', () => {
                 try {
                     let packageFile = `${directory}/app.js`
@@ -34,10 +34,10 @@ module.exports.addViewToProject = (view, directory, fileType) => {
             })
             break;
         case 'hbs':
-            fetchFile.fetchContent('/template/view/layout.hbs').then((data) =>
-                createFileAndAddContent.createFileWithContent(`${directory}/views/main.hbs`, data))
-            fetchFile.fetchContent('/template/view/view.hbs').then((data) =>
-                createFileAndAddContent.createFileWithContent(`${directory}/views/view.hbs`, data))
+            fetchContent('/template/view/layout.hbs').then((data) =>
+                createFileWithContent(`${directory}/views/main.hbs`, data))
+            fetchContent('/template/view/view.hbs').then((data) =>
+                createFileWithContent(`${directory}/views/view.hbs`, data))
             shell.exec('npm i express-handlebars', () => {
                 try {
                     let packageFile = `${directory}/app.js`

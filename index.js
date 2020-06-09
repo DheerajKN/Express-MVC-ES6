@@ -7,7 +7,7 @@ const arguements = require("minimist");
 const detectJsType = require('./helperFunctions/detectJsType')
 const {jsType} = require('./helperFunctions/jsTypes')
 
-const createFileWithContent = require('./helperFunctions/createFileAndAddContent');
+const {createFileWithContent} = require('./helperFunctions/createFileAndAddContent');
 const styling = require('./code-snippets/styling')
 const viewComponent = require('./code-snippets/view')
 const {initialJSSetup} = require('./code-snippets/express-js/index')
@@ -44,7 +44,7 @@ else if (arguement._[0] !== undefined) {
   if(jsType.TS === fileType){
     //link ts folder index.js as part of TS Support Activity
   }else{
-    createFileWithContent.createFileWithContent(join(appDirectory, '.babelrc'), '{  "presets": ["@babel/preset-env"]  }')
+    createFileWithContent(join(appDirectory, '.babelrc'), '{  "presets": ["@babel/preset-env"]  }')
     initialJSSetup(appDirectory, folderName)
   }
   
