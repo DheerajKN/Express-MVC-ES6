@@ -8,10 +8,10 @@ module.exports = (folderDirectory) => {
             if(err){
                 console.log('Please the directory correctly, as package.json is missing')
             } else {
-                content = JSON.parse(content).dependencies;
+                content = JSON.parse(content).devDependencies;
                 if (content.hasOwnProperty('@types/express')) {
                     resolve(jsType.TS)
-                } else if (content.hasOwnProperty('express')) {
+                } else {
                     resolve(jsType.JS)
                 }
             }

@@ -13,6 +13,7 @@ const viewComponent = require('./code-snippets/view')
 const {initialJSSetup} = require('./code-snippets/express-js/index')
 const {initialTSSetup} = require('./code-snippets/express-ts/index')
 const {JSFlagScript} = require('./code-snippets/express-js/flagScripts');
+const {TSFlagScript} = require('./code-snippets/express-ts/flagScripts');
 
 let appDirectory = `${process.cwd()}`;
 
@@ -28,8 +29,9 @@ const cdIntoApp = appDirectory => {
 if (Object.keys(arguement).some(r => ["resource", "db", "auth"].includes(r))) {
     detectJsType(appDirectory).then(type=>{
         if (type === jsType.TS) {
-          //Activity as part of TS Support      
+          TSFlagScript(arguement, appDirectory);
         } else if(type === jsType.JS){
+          console.log('entered')
           JSFlagScript(arguement, appDirectory);
         }
     })

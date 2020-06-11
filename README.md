@@ -1,6 +1,6 @@
 # Express-MVC-ES6
 
-Simple Express Boiler Plate creator with mvc and es6 syntax
+Simple Express Boiler Plate creator with typescript, mvc and es6 syntax
 
 ## Initial Setup
 
@@ -10,13 +10,18 @@ Simple Express Boiler Plate creator with mvc and es6 syntax
 
     [directory-where-you-want-create-boilerplate] $ express-es6-generator <project-name> --style=scss --view=hbs
 
+## TypeScript Support
+
+    [directory-where-you-want-create-boilerplate] $ express-es6-generator <project-name> --typescript --style=scss --view=hbs
+
 ## Arguements
 
 - Style [Supported]: SCSS, LESS, CSS, SASS
 - View [Supported]: EJS, HBS
 - Database [Supported]: mongo [Default], postgres, mysql
 
-## Other Functionality
+## Other Functionality 
+### **(Same commands for both js, ts based project)**: Program automatically detect the type of the project so no need to specify --typescript for following commands
 
 - --resource: This would create an entry in routes/index.js and create subsequent controller and service files.
 
