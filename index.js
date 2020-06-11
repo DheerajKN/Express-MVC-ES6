@@ -11,6 +11,7 @@ const {createFileWithContent} = require('./helperFunctions/createFileAndAddConte
 const styling = require('./code-snippets/styling')
 const viewComponent = require('./code-snippets/view')
 const {initialJSSetup} = require('./code-snippets/express-js/index')
+const {initialTSSetup} = require('./code-snippets/express-ts/index')
 const {JSFlagScript} = require('./code-snippets/express-js/flagScripts');
 
 let appDirectory = `${process.cwd()}`;
@@ -42,7 +43,7 @@ else if (arguement._[0] !== undefined) {
   const fileType = arguement.hasOwnProperty('typescript') ? jsType.TS : jsType.JS;
 
   if(jsType.TS === fileType){
-    //link ts folder index.js as part of TS Support Activity
+    initialTSSetup(appDirectory, folderName)
   }else{
     createFileWithContent(join(appDirectory, '.babelrc'), '{  "presets": ["@babel/preset-env"]  }')
     initialJSSetup(appDirectory, folderName)
