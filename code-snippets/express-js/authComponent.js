@@ -58,6 +58,7 @@ exports.verifyToken = (req, res, next) => {
         const authFileContent = `import bcrypt from 'bcryptjs';
 import { Router } from 'express';
 import {check, validationResult} from "express-validator";
+import jwt from 'jsonwebtoken';
 
 import { authenticate, verifyToken } from '../auth.js';
 import User from '../models/User';
