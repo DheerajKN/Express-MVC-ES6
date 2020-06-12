@@ -7,6 +7,7 @@ module.exports.addAuthComponent = (conditionalValue, folderDirectory) => {
     shell.exec('npm i jsonwebtoken bcryptjs', () => {
 
         const fileContent = `import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken';
 import User from './models/User'
 
 exports.authenticate = (email, password) => {
@@ -39,8 +40,11 @@ exports.verifyToken = (req, res, next) => {
         const jwtValue = jwtHeader.split(' ');
         // Get token from array
         const jwtToken = jwtValue[1];
-        // Set the token
-        req.token = jwtToken;
+        //Verify the token and extract info
+        jwt.verify(jwtToken, process.env.JWT_PVTKEY, (err, { user }) => {
+            // Set the values
+            res.locals.token = {err, user};
+        });
         // Next middleware
         next();
     } else {
@@ -53,7 +57,6 @@ exports.verifyToken = (req, res, next) => {
 
         const authFileContent = `import bcrypt from 'bcryptjs';
 import { Router } from 'express';
-import jwt from 'jsonwebtoken';
 import {check, validationResult} from "express-validator";
 
 import { authenticate, verifyToken } from '../auth.js';
@@ -122,15 +125,14 @@ authProvider.post('/', async (req, res) => {
 });
 
 authProvider.get('/meDetailed', verifyToken, (req, res) => {
-    jwt.verify(req.token, process.env.JWT_PVTKEY, (err, { user }) => {
-        if (err) {
-            return res.sendStatus(403);
-        } else {
-            return res.sendStatus(200).json({
-                user
-            });
-        }
-    });
+    const {err, user} = res.locals.token;
+    if (err) {
+        return res.sendStatus(403);
+    } else {
+        return res.status(200).json({
+            user
+        });
+    }
 })
 
 export default authProvider;

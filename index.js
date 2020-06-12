@@ -31,7 +31,6 @@ if (Object.keys(arguement).some(r => ["resource", "db", "auth"].includes(r))) {
         if (type === jsType.TS) {
           TSFlagScript(arguement, appDirectory);
         } else if(type === jsType.JS){
-          console.log('entered')
           JSFlagScript(arguement, appDirectory);
         }
     })
