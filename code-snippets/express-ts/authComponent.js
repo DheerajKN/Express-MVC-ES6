@@ -19,7 +19,7 @@ export const authenticate = (email: string, password: string) => {
             bcrypt.compare(password, user.password, (err, isMatch) => {
                 if (err) throw err;
                 if (isMatch) {
-                    resolve({ email, password });
+                    resolve({ email });
                 } else {
                     reject('Authentication Failed!!')
                 }
@@ -41,9 +41,9 @@ export const verifyToken = (req: Request, res: Response, next:  NextFunction) =>
         const jwtValue = jwtHeader.split(' ');
         // Get token from array
         const jwtToken = jwtValue[1];
-        jwt.verify(jwtToken, process.env.JWT_PVTKEY, (err: Error, { user }:{user: IUser}) => {
+        jwt.verify(jwtToken, process.env.JWT_PVTKEY, (err: Error, { email }:{email: string}) => {
             // Set the values
-            res.locals.token = {err, user};
+            res.locals.token = {err, email};
         });
         // res.locals.token = jwtToken;
         // Next middleware
@@ -61,7 +61,7 @@ import { Router, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import {check, validationResult} from "express-validator";
 
-import { authenticate, verifyToken } from '../auth.js';
+import { authenticate, verifyToken } from '../auth';
 import User, {IUser} from '../models/User';
 
 const authProvider = Router();
@@ -69,7 +69,7 @@ authProvider.post('/register', [
         check("email", "Please include a valid email").isEmail(),
         check("password").exists().withMessage("Password should not be empty")
         .isLength({min:8}).withMessage("Password must have min. of 8 characters")
-        .matches(/^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,}$/).withMessage("Password must be atleast one upper case, one number and special character")
+        .matches(/^(?=.*[\\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\\w!@#$%^&*]{8,}$/).withMessage("Password must be atleast one upper case, one number and special character")
     ], async (req: Request, res: Response) => {
 
     const errors = validationResult(req)
@@ -78,25 +78,23 @@ authProvider.post('/register', [
     }
     const { email, password } = req.body;
 
-    const userExists = await User.findOne({ ${conditionalValue} });
+    const userExists: IUser = await User.findOne({ ${conditionalValue} });
     if (userExists) {
         return res.sendStatus(403)
     } else {
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(password, salt, async (err, hash) => {
                 try {
-                    const token = jwt.sign({ email, password }, process.env.JWT_PVTKEY, {
-                        expiresIn: '15m'
-                    });
-
-                    const user = new User({ email, password: hash })
+                    const user: IUser = new User({ email, password: hash })
                     await user.save()
 
+                    const token = jwt.sign({email}, process.env.JWT_PVTKEY, {
+                        expiresIn: '15m'
+                    });
                     const { iat, exp }: any = jwt.decode(token);
                     // Respond with token
                     return res.status(201).json({ iat, exp, token });
                 } catch (err) {
-                    console.log(err)
                     return res.sendStatus(403)
                 }
             });
@@ -110,10 +108,10 @@ authProvider.post('/', async (req: Request, res: Response) => {
 
     try {
         // Authenticate User
-        const user = await authenticate(email, password);
+        const emailObj: any = await authenticate(email, password);
 
         // Create JWT
-        const token = jwt.sign({ user }, process.env.JWT_PVTKEY, {
+        const token = jwt.sign(emailObj, process.env.JWT_PVTKEY, {
             expiresIn: '15m'
         });
 
@@ -127,13 +125,11 @@ authProvider.post('/', async (req: Request, res: Response) => {
 });
 
 authProvider.get('/meDetailed', verifyToken, (req: Request, res: Response) => {
-    const {err, user}: {err: Error, user: IUser} = res.locals.token;
+    const {err, email}: {err: Error, email: any} = res.locals.token;
     if (err) {
         return res.sendStatus(403);
     } else {
-        return res.status(200).json({
-            user
-        });
+        return res.status(200).json({email});
     }
 })
 

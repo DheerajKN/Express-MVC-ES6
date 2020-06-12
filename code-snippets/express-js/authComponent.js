@@ -18,7 +18,7 @@ exports.authenticate = (email, password) => {
             bcrypt.compare(password, user.password, (err, isMatch) => {
                 if (err) throw err;
                 if (isMatch) {
-                    resolve({ email, password });
+                    resolve({ email });
                 } else {
                     reject('Authentication Failed!!')
                 }
@@ -41,9 +41,9 @@ exports.verifyToken = (req, res, next) => {
         // Get token from array
         const jwtToken = jwtValue[1];
         //Verify the token and extract info
-        jwt.verify(jwtToken, process.env.JWT_PVTKEY, (err, { user }) => {
+        jwt.verify(jwtToken, process.env.JWT_PVTKEY, (err, { email }) => {
             // Set the values
-            res.locals.token = {err, user};
+            res.locals.token = {err, email};
         });
         // Next middleware
         next();
@@ -84,12 +84,12 @@ authProvider.post('/register', [
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(password, salt, async (err, hash) => {
                 try {
-                    const token = jwt.sign({ email, password }, process.env.JWT_PVTKEY, {
-                        expiresIn: '15m'
-                    });
-
                     const user = new User({ email, password: hash })
                     await user.save()
+                    
+                    const token = jwt.sign({ email }, process.env.JWT_PVTKEY, {
+                        expiresIn: '15m'
+                    });
 
                     const { iat, exp } = jwt.decode(token);
                     // Respond with token
@@ -109,10 +109,10 @@ authProvider.post('/', async (req, res) => {
 
     try {
         // Authenticate User
-        const user = await authenticate(email, password);
+        const emailObj = await authenticate(email, password);
 
         // Create JWT
-        const token = jwt.sign({ user }, process.env.JWT_PVTKEY, {
+        const token = jwt.sign(emailObj, process.env.JWT_PVTKEY, {
             expiresIn: '15m'
         });
 
@@ -126,13 +126,11 @@ authProvider.post('/', async (req, res) => {
 });
 
 authProvider.get('/meDetailed', verifyToken, (req, res) => {
-    const {err, user} = res.locals.token;
+    const {err, email} = res.locals.token;
     if (err) {
         return res.sendStatus(403);
     } else {
-        return res.status(200).json({
-            user
-        });
+        return res.status(200).json({email});
     }
 })
 
