@@ -18,7 +18,7 @@
     "minimist": "^1.2.3",
     "mkdirp": "^0.5.1",
     "pluralize": "^8.0.0",
-    "shelljs": "^0.8.3"
+    "shelljs": "^0.8.5"
   },
   "bin": {
     "express-es6-generator": "index.js"
