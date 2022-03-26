@@ -15,7 +15,7 @@
   "author": "K. N. Dheeraj",
   "license": "ISC",
   "dependencies": {
-    "minimist": "^1.2.3",
+    "minimist": "^1.2.6",
     "mkdirp": "^0.5.1",
     "pluralize": "^8.0.0",
     "shelljs": "^0.8.3"
